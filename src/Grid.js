@@ -29,7 +29,7 @@ class Item extends Component {
                 content = (
                     <Image
                         style={{width: 20, height: 20}}
-                        source={require('./bomb_black.png')}
+                        source={require('./img/bomb_black.png')}
                     />
                 );
             }
@@ -44,7 +44,7 @@ class Item extends Component {
             let content = (
                 <Image
                     style={{width: 20, height: 20}}
-                    source={require('./flag.png')}
+                    source={require('./img/flag.png')}
                 />
             );
             return ({content: content});

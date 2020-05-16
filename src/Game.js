@@ -167,25 +167,16 @@ export default class Game extends Component {
                 <View style={gStyles.statusBar}>
                     <View style={gStyles.containerStatus}>
                         <View style={styles.subView}>
-                            <Text 
-                                style={[
-                                    gStyles.textStatusBar,
-                                ]}
-                            >
+                            <Text style={gStyles.textStatusBar}>
                                 {`${this.state.num}  `}
                                 <Image
-                                    style={{width: 20, height: 20}}
-                                    source={require('./bomb.png')}
+                                    style={{ width: 20, height: 20 }}
+                                    source={require('./img/bomb.png')}
                                 />
                             </Text>
                         </View>
-                        <View style={styles.subView}>
-                            <Text 
-                                style={[
-                                    gStyles.textStatusBar,
-                                    { textAlign: 'right' }
-                                ]}
-                            >
+                        <View style={[styles.subView, { alignItems: 'flex-end' }]}>
+                            <Text style={gStyles.textStatusBar}>
                                 {`${formatNumber(this.state.timer.min)}:${formatNumber(this.state.timer.sec)}`}
                             </Text>
                         </View>

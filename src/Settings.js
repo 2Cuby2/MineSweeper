@@ -84,7 +84,7 @@ export default function Settings({ navigation }) {
                         Make a long press on a square to place a flag upon it.
                     </Text>
                     <Text style={styles.cardText}>
-                        Reveal all squares without a bomb to win the game.
+                        Reveal all the squares without a bomb to win the game.
                     </Text>
                     <Text style={styles.cardText}>
                         Use the number on the revealed squares, that indicates the number of bombs next to it,
