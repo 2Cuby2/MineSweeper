@@ -17,4 +17,4 @@ To build the game use the command ```expo build:android``` or ```expo build:ios`
 
 ## Already built version
 
-You can find an aldready built version of the game for android in the folder ```build```.
+You can find an already built version of the game for android in the folder ```build```.
