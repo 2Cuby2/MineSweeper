@@ -18,3 +18,10 @@ To build the game use the command ```expo build:android``` or ```expo build:ios`
 ## Already built version
 
 You can find an already built version of the game for android in the folder ```build```.
+
+## Code structure
+
+- ```App.js``` : main app component
+- ```src/``` : all components and source files
+- ```src/styles/``` : global styles for the app
+- ```src/utils/``` : all utils functions to setup the grid and run the game
