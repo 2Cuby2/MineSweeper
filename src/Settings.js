@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TouchableHighlight, SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import { Picker } from '@react-native-community/picker';
 
-import { gStyles } from './styles.js';
+import { gStyles } from './styles/styles.js';
 
 
 // Picker to get the number of rows and columns to display in the game

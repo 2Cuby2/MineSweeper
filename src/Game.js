@@ -17,10 +17,10 @@ import { useFocusEffect } from '@react-navigation/native'
 // Component that handle the grid display
 import Grid from './Grid.js';
 
-import { gStyles } from './styles.js';
+import { gStyles } from './styles/styles.js';
 
 // File with all utils function for the algorithm
-import { createBlankGrid, setGrid, handle0Bomb, isOver } from './utils.js';
+import { createBlankGrid, setGrid, handle0Bomb, isOver } from './utils/utils.js';
 
 
 /* Handle hardware android back button events that should stop timer before changing screen to prevent
@@ -133,7 +133,7 @@ export default class Game extends Component {
         // If it's a bomb, game is lost
         if(uGrid[y][x].type === -1) {
             this.startTimer(false);
-            this.showModal('You loose :(');
+            this.showModal('You lose :(');
         }
         else {
             // If 0 bomb next to the square, recursivly reveal the other squares
@@ -212,7 +212,7 @@ export default class Game extends Component {
                             style={gStyles.openButton}
                             onPress={this.restart}
                         >
-                            <Text style={gStyles.textStyle}>Restart Game</Text>
+                            <Text style={gStyles.textStyle}>Retry</Text>
                         </TouchableHighlight>
                     </Animated.View>
                 </Animated.View>
