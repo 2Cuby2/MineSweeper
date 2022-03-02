@@ -26,6 +26,7 @@
     "@types/react": "^17.0.39",
     "@types/react-native": "^0.67.1",
     "babel-preset-expo": "9.0.2",
+    "eas-cli": "^0.47.0",
     "expo-cli": "^5.2.0"
   },
   "private": true
