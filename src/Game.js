@@ -1,5 +1,5 @@
 import React, { Component, useCallback } from 'react';
-import { 
+import {
     SafeAreaView,
     StyleSheet,
     Text,
@@ -47,7 +47,7 @@ export default class Game extends Component {
             num: infos[1], // Number of bombs
             isFirstMove: true, // Check whether it's the first move of the player
             text: '', // Text to display once game is over (win or loose)
-            timer: {min: 0, sec: 0}, // Timer
+            timer: { min: 0, sec: 0 }, // Timer
             pos: new Animated.Value(-180), // Y position of the popup (start hidden at the bottom of the screen)
             scale: new Animated.Value(1), // Scale of the popup for the animation
             canBePressed: 'auto' // State if it's possible to click on the grid
@@ -58,16 +58,17 @@ export default class Game extends Component {
     }
 
     // Set the value of the state variable canBePressed to allow or not click on the grid
-    setBePressed(value) { this.setState({canBePressed: value}); }
+    setBePressed(value) { this.setState({ canBePressed: value }); }
 
     // Restart the game from the beginning
     restart() {
         let infos = createBlankGrid(this.props.route.params.row, this.props.route.params.col);
-        this.setState({grid: infos[0], num: infos[1], isFirstMove: true}, () => {
+        this.setState({ grid: infos[0], num: infos[1], isFirstMove: true }, () => {
             // Hide the popup
             Animated.timing(this.state.pos, {
                 toValue: -180,
                 duration: 500,
+                useNativeDriver: false,
                 easing: Easing.out(Easing.ease)
             }).start(() => {
                 this.setBePressed('auto'); // Allow click on the grid
@@ -78,14 +79,14 @@ export default class Game extends Component {
 
     // Start the timer or stop it depending on the value of arg
     startTimer(bool) {
-        if(bool) {
+        if (bool) {
             this.interval = setInterval(() => {
                 let timer = this.state.timer;
-                if(timer.sec === 59) {
-                    this.setState({timer: {min: timer.min + 1, sec: 0}});
+                if (timer.sec === 59) {
+                    this.setState({ timer: { min: timer.min + 1, sec: 0 } });
                 }
                 else {
-                    this.setState({timer: {min: timer.min, sec: timer.sec + 1}});
+                    this.setState({ timer: { min: timer.min, sec: timer.sec + 1 } });
                 }
             }, 1000);
         }
@@ -93,28 +94,31 @@ export default class Game extends Component {
             clearInterval(this.interval);
         }
     }
-    
+
     // Reset timer to zero
-    resetTimer() { this.setState({timer: {min: 0, sec: 0}}); }
+    resetTimer() { this.setState({ timer: { min: 0, sec: 0 } }); }
 
     // Show popup once game is over
     showModal(text) {
-        this.setState({text: text}, () => {
+        this.setState({ text: text }, () => {
             Animated.sequence([
                 // EaseOut animation from the bottom of the screen to the center
                 Animated.timing(this.state.pos, {
                     toValue: Dimensions.get('window').height / 2 - 90,
                     duration: 1000,
+                    useNativeDriver: false,
                     easing: Easing.out(Easing.ease)
                 }),
                 // Pulse animation once popup has appeared
                 Animated.timing(this.state.scale, {
                     toValue: 1.4,
-                    duration: 250
+                    duration: 250,
+                    useNativeDriver: false,
                 }),
                 Animated.timing(this.state.scale, {
                     toValue: 1,
-                    duration: 250
+                    duration: 250,
+                    useNativeDriver: false,
                 })
             ]).start(() => this.setBePressed('none')); // Prevent from clicking on the grid when popup show
         })
@@ -125,38 +129,38 @@ export default class Game extends Component {
         let uGrid = this.state.grid;
         uGrid[y][x].selected = 1;
         // If it's the first move, set the grid and start the timer
-        if(this.state.isFirstMove) {
+        if (this.state.isFirstMove) {
             uGrid = setGrid(uGrid, this.state.num, x, y);
             this.startTimer(true);
-            this.setState({isFirstMove: false});
+            this.setState({ isFirstMove: false });
         }
         // If it's a bomb, game is lost
-        if(uGrid[y][x].type === -1) {
+        if (uGrid[y][x].type === -1) {
             this.startTimer(false);
             this.showModal('You lose :(');
         }
         else {
             // If 0 bomb next to the square, recursivly reveal the other squares
-            if(uGrid[y][x].type === 0) {
+            if (uGrid[y][x].type === 0) {
                 uGrid = handle0Bomb(uGrid, x, y);
             }
             // Check if game is over and display the winning message
-            if(isOver(uGrid)) {
+            if (isOver(uGrid)) {
                 this.startTimer(false);
                 this.showModal('You win !');
             }
         }
-        this.setState({grid: uGrid});
+        this.setState({ grid: uGrid });
     }
 
     // Handle long press action to place a flag
     onLongPress(x, y) {
         let uGrid = this.state.grid;
-        if(uGrid[y][x].selected === 0) uGrid[y][x].selected = 2;
+        if (uGrid[y][x].selected === 0) uGrid[y][x].selected = 2;
         else uGrid[y][x].selected = 0;
-        this.setState({grid: uGrid}, () => Vibration.vibrate(200)); // Vibrate to confirm that a flag has been placed
+        this.setState({ grid: uGrid }, () => Vibration.vibrate(200)); // Vibrate to confirm that a flag has been placed
     }
-    
+
     render() {
 
         const formatNumber = number => `0${number}`.slice(-2); // Format numbers for timer
@@ -193,17 +197,17 @@ export default class Game extends Component {
                     />
                 </View>
 
-                <Animated.View 
+                <Animated.View
                     style={[
                         styles.animatedView,
                         { bottom: this.state.pos }
                     ]}
                 >
-                    <Animated.View 
+                    <Animated.View
                         style={[
                             gStyles.card,
-                            { transform: [{scale: this.state.scale}] }
-                            ]}
+                            { transform: [{ scale: this.state.scale }] }
+                        ]}
                     >
                         <Text style={styles.modalText}>
                             {this.state.text}
