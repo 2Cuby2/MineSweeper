@@ -15,12 +15,12 @@ import {
 import { useFocusEffect } from '@react-navigation/native'
 
 // Component that handle the grid display
-import Grid from './Grid.js';
+import Grid from './Grid';
 
-import { gStyles } from './styles/styles.js';
+import { gStyles } from './styles';
 
 // File with all utils function for the algorithm
-import { createBlankGrid, setGrid, handle0Bomb, isOver } from './utils/utils.js';
+import { createBlankGrid, setGrid, handle0Bomb, isOver } from './utils';
 
 
 /* Handle hardware android back button events that should stop timer before changing screen to prevent

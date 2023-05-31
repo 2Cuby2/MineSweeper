@@ -7,7 +7,7 @@
     "target": "ES2022",
     "outDir": "dist",
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true,
+    "jsx": "react-native"
   },
   "include": ["src/**/*"]
 }
