@@ -4,8 +4,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Game from './src/Game.js'; // Game component
-import Settings from './src/Settings.js'; // Settings component
+import Game from './src/Game'; // Game component
+import Settings from './src/Settings'; // Settings component
 
 
 const Stack = createStackNavigator();

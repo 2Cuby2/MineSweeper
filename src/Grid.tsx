@@ -11,7 +11,7 @@ import {
 
 import Constants from 'expo-constants';
 
-import { Item, Grid } from './utils';
+import { ItemType, GridType } from './utils';
 
 
 type ItemProps = {
@@ -19,7 +19,7 @@ type ItemProps = {
     pos: { x: number, y: number };
     onPress: (x: number, y: number) => void;
     onLongPress: (x: number, y: number) => void;
-    item: Item;
+    item: ItemType;
 };
 const Item = (props: ItemProps) => {
     // State if button should be disabled
@@ -27,7 +27,7 @@ const Item = (props: ItemProps) => {
     // Handle the style of the button depending on the type of box
     const [style, setStyle] = useState<StyleProp<TextStyle>>(styles.button);
     // Content to display in the box
-    const [content, setContent] = useState<React.JSX.Element | null>(null);
+    const [content, setContent] = useState<JSX.Element | null>(null);
 
     // If grid is updated, update the view of the box depending on the player move
     useEffect(() => {
@@ -88,7 +88,7 @@ type RowProps = {
     num: number;
     onPress: (x: number, y: number) => void;
     onLongPress: (x: number, y: number) => void;
-    rowItem: Item[]
+    rowItem: ItemType[]
 };
 const Row = (props: RowProps) => {
     let rows = [];
@@ -116,7 +116,7 @@ type GridProps = {
     col: number;
     onPress: (x: number, y: number) => void;
     onLongPress: (x: number, y: number) => void;
-    grid: Grid;
+    grid: GridType;
 };
 const Grid = (props: GridProps) => {
     let cols = [];
