@@ -1,6 +1,6 @@
-import React from 'react';
-
 import 'react-native-gesture-handler';
+
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -11,7 +11,7 @@ import Settings from './src/Settings.js'; // Settings component
 const Stack = createStackNavigator();
 
 
-export default function App() {
+const App = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -19,5 +19,8 @@ export default function App() {
                 <Stack.Screen name='Game' component={Game} />
             </Stack.Navigator>
         </NavigationContainer>
-      );
+    );
 }
+
+
+export default App;

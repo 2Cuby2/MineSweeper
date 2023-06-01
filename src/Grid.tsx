@@ -1,74 +1,96 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    Text,
+    Image,
+    StyleProp,
+    TextStyle,
+} from 'react-native';
 
 import Constants from 'expo-constants';
 
+import { Item, Grid } from './utils';
 
-class Item extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            disabled: false, // State if button should be disabled
-            style: styles.button, // Handle the style of the button depending on the type of box
-            content: null // Content to display in the box
-        };
-    }
+
+type ItemProps = {
+    key: number;
+    pos: { x: number, y: number };
+    onPress: (x: number, y: number) => void;
+    onLongPress: (x: number, y: number) => void;
+    item: Item;
+};
+const Item = (props: ItemProps) => {
+    // State if button should be disabled
+    const [disabled, setDisabled] = useState(false);
+    // Handle the style of the button depending on the type of box
+    const [style, setStyle] = useState<StyleProp<TextStyle>>(styles.button);
+    // Content to display in the box
+    const [content, setContent] = useState<React.JSX.Element | null>(null);
 
     // If grid is updated, update the view of the box depending on the player move
-    static getDerivedStateFromProps(props, _) {
-        if(props.item.selected === 0) {
-            let content = null;
-            if(Constants.manifest.extra.test) content = <Text style={styles.text}>{props.item.type}</Text>
-            return ({disabled: false, style: [styles.button, styles.buttonEnabled], content: content});
-        }
-        else if(props.item.selected === 1) {
+    useEffect(() => {
+        if (props.item.selected === 0) {
+            const content = Constants.manifest!.extra!.test
+                ? <Text style={styles.text}>{props.item.type}</Text>
+                : null;
+            setContent(content);
+            setStyle([styles.button, styles.buttonEnabled]);
+        } else if (props.item.selected === 1) {
             let count = props.item.type;
             let content;
-            if(count === 0) count = '';
-            if(count === -1) {
+            if (count === 0) count = null;
+            if (count === -1) {
                 content = (
                     <Image
-                        style={{width: 20, height: 20}}
+                        style={{ width: 20, height: 20 }}
                         source={require('./img/bomb_black.png')}
                     />
                 );
-            }
-            else {
+            } else {
                 content = (
                     <Text style={styles.text}>{count}</Text>
                 );
             }
-            return ({disabled: true, style: [styles.button, styles.buttonDisabled], content: content});
-        }
-        else if(props.item.selected === 2) {
-            let content = (
+            setDisabled(true);
+            setStyle([styles.button, styles.buttonDisabled]);
+            setContent(content);
+        } else if (props.item.selected === 2) {
+            const content = (
                 <Image
                     style={{width: 20, height: 20}}
                     source={require('./img/flag.png')}
                 />
             );
-            return ({content: content});
+            setContent(content);
         }
-        return null;
-    }
+    }, [props])
 
-    render() {
-        return (
-            <View style={styles.item}>
-                <TouchableOpacity 
-                    style={this.state.style}
-                    onPress={() => this.props.onPress(this.props.pos.x, this.props.pos.y)}
-                    onLongPress={() => this.props.onLongPress(this.props.pos.x, this.props.pos.y)}
-                    disabled={this.state.disabled}
-                >
-                    {this.state.content}
-                </TouchableOpacity>
-            </View>
-        );
-    }
-}
+    return (
+        <View style={styles.item}>
+            <TouchableOpacity 
+                style={style}
+                onPress={() => props.onPress(props.pos.x, props.pos.y)}
+                onLongPress={() => props.onLongPress(props.pos.x, props.pos.y)}
+                disabled={disabled}
+            >
+                {content}
+            </TouchableOpacity>
+        </View>
+    );
+};
 
-const Row = (props) => {
+
+type RowProps = {
+    key: number;
+    pos: number;
+    num: number;
+    onPress: (x: number, y: number) => void;
+    onLongPress: (x: number, y: number) => void;
+    rowItem: Item[]
+};
+const Row = (props: RowProps) => {
     let rows = [];
     for(let i=0; i < props.num; i++) {
         rows.push(
@@ -88,7 +110,15 @@ const Row = (props) => {
     );
 };
 
-export default function Grid(props) {
+
+type GridProps = {
+    row: number;
+    col: number;
+    onPress: (x: number, y: number) => void;
+    onLongPress: (x: number, y: number) => void;
+    grid: Grid;
+};
+const Grid = (props: GridProps) => {
     let cols = [];
     for(let i=0; i < props.col; i++) {
         cols.push(
@@ -108,6 +138,7 @@ export default function Grid(props) {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     item: {
@@ -131,3 +162,6 @@ const styles = StyleSheet.create({
         color: 'black',
     }
 });
+
+
+export default Grid;

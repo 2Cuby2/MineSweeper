@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
-import { TouchableHighlight, SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import {
+    TouchableHighlight,
+    SafeAreaView,
+    StyleSheet,
+    View,
+    Text,
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-import { gStyles } from './styles';
+import gStyles from './styles';
 
 
 // Picker to get the number of rows and columns to display in the game
-const NumberPicker = (props) => {
-    let pickerItems = [];
-    for(let i=props.min; i <= props.max; i++) {
+type NumberPickerProps = {
+    min: number;
+    max: number;
+    setValue: React.Dispatch<React.SetStateAction<number>>;
+    selectedValue: number;
+};
+const NumberPicker = (props: NumberPickerProps) => {
+    const pickerItems = [];
+    for (let i = props.min; i <= props.max; i++) {
         pickerItems.push(
             <Picker.Item key={i} label={'' + i} value={i} />
         );
@@ -25,8 +38,9 @@ const NumberPicker = (props) => {
     );
 };
 
-export default function Settings({ navigation }) {
 
+type SettingsProps = { navigation: NavigationProp<ParamListBase> };
+const Settings = ({ navigation }: SettingsProps) => {
     const [rowNumber, setRowNumber] = useState(7);
     const [colNumber, setColNumber] = useState(15);
 
@@ -106,6 +120,7 @@ export default function Settings({ navigation }) {
     );
 }
 
+
 const styles = StyleSheet.create({
     cardText: {
         fontSize: 16,
@@ -120,3 +135,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     }
 });
+
+
+export default Settings;
