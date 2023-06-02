@@ -1,11 +1,6 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "strict": true,
-    "outDir": "dist",
-    "forceConsistentCasingInFileNames": true,
-  },
   "extends": "expo/tsconfig.base",
-  "include": ["App.tsx", "src/**/*"]
+  "compilerOptions": {
+    "strict": true
+  }
 }
