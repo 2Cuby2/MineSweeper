@@ -19,11 +19,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.gitub.2Cuby2.MineSweeper",
+      "bundleIdentifier": "com.github.dCuby2.MineSweeper",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.gitub.2Cuby2.MineSweeper"
+      "package": "com.github.dCuby2.MineSweeper"
     },
     "androidStatusBar": {
       "barStyle": "light-content",
