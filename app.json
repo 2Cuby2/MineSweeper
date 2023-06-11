@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MineSweeper",
-    "slug": "MineSweeper",
+    "slug": "minesweeper",
     "platforms": [
       "ios",
       "android"
@@ -32,8 +32,12 @@
     "androidNavigationBar": {
       "backgroundColor": "#3346A6"
     },
-    "extra" : {
-      "test": false
-    }
+    "extra": {
+      "test": false,
+      "eas": {
+        "projectId": "7079fdcc-30e3-4bae-b5b7-8072903234d9"
+      }
+    },
+    "owner": "2cuby2"
   }
 }
