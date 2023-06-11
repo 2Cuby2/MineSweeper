@@ -30,12 +30,12 @@ const Item = ({ item, pos, onPress, onLongPress }: ItemProps) => {
     let style: StyleProp<ViewStyle> = styles.button;
 
     if (item.status === ItemObjectStatus.Hidden) {
-        content = Constants.manifest!.extra!.test
+        content = Constants.expoConfig?.extra?.test
             ? <Text style={styles.text}>{item.isBomb ? 'x' : ' '}</Text>
             : null;
         style = [styles.button, styles.buttonEnabled];
     } else if (item.status === ItemObjectStatus.Revealed) {
-        let count = item.nextBombsCount;
+        const count = item.nextBombsCount;
 
         if (item.isBomb) {
             content = (
@@ -85,7 +85,7 @@ type RowProps = {
     rowItem: ItemObject[]
 };
 const Row = ({ rowItem, pos, num, onPress, onLongPress }: RowProps) => {
-    let rows = [];
+    const rows = [];
     for (let i=0; i < num; i++) {
         rows.push(
             <Item
@@ -113,7 +113,7 @@ type GridProps = {
     grid: GridObject;
 };
 const Grid = ({ grid, rows, cols: colsNum, onPress, onLongPress }: GridProps) => {
-    let cols = [];
+    const cols = [];
     for (let i=0; i < colsNum; i++) {
         cols.push(
             <Row

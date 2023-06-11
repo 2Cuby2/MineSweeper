@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, {
     createContext,
     useState,
@@ -19,7 +20,7 @@ export enum GameStatus {
     Started = 1,
     Won = 2,
     Lost = 3,
-};
+}
 
 
 type GameContextType = {

@@ -20,7 +20,7 @@ export function createBlankGrid(row: number, col: number): { grid: GridObject, n
     const min = Math.floor(max / 1.5);
     const num = Math.floor(Math.random() * (max - min + 1)) + min;
     return { grid, num };
-};
+}
 
 
 // Place num bombs on the grid, depending on the first move played
@@ -36,7 +36,7 @@ function placeBombs(grid: GridObject, num: number, xFirst: number, yFirst: numbe
         }
     }
     return grid;
-};
+}
 
 
 // Get the number of bombs next to the box at the position (x, y)
@@ -50,7 +50,7 @@ function countNextBombs(grid: GridObject, x: number, y: number) {
         }
     }
     return count;
-};
+}
 
 
 // Setup the grid with bombs considering the first move played
