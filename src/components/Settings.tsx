@@ -9,7 +9,9 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-import gStyles from './styles';
+import { useGame } from '../hooks';
+
+import { globalStyle as gStyles } from '../styles';
 
 
 // Picker to get the number of rows and columns to display in the game
@@ -41,22 +43,13 @@ const NumberPicker = (props: NumberPickerProps) => {
 
 type SettingsProps = { navigation: NavigationProp<ParamListBase> };
 const Settings = ({ navigation }: SettingsProps) => {
+    const { defineDimensions } = useGame();
+
     const [rowNumber, setRowNumber] = useState(7);
     const [colNumber, setColNumber] = useState(15);
 
     return (
         <SafeAreaView style={gStyles.container}>
-
-            <View style={gStyles.statusBar}>
-                <View style={gStyles.containerStatus}>
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <Text style={gStyles.textStatusBar}>
-                            MineSweeper
-                        </Text>
-                    </View>
-                </View>
-            </View>
-
             <View style={{ flex: 12 }}>
                 <View style={[gStyles.card, { marginTop: 60 }]}>
                     <Text style={styles.title}>
@@ -106,10 +99,10 @@ const Settings = ({ navigation }: SettingsProps) => {
                     </Text>
                     <TouchableHighlight
                             style={[gStyles.openButton, { marginTop: 35 }]}
-                            onPress={() => navigation.navigate('Game', { 
-                                row: rowNumber,
-                                col: colNumber
-                            })}
+                            onPress={() => {
+                                defineDimensions(rowNumber, colNumber);
+                                navigation.navigate('Game');
+                            }}
                     >
                         <Text style={gStyles.textStyle}>Play</Text>
                     </TouchableHighlight>

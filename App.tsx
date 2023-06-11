@@ -1,20 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { useColorScheme } from 'react-native';
+import {
+    NavigationContainer,
+    DarkTheme,
+    DefaultTheme,
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import { GameProvider, TimerProvider } from './src/providers';
+import {
+    HeaderRight,
+    Game,
+    Settings,
+} from './src/components';
+
+import { headerStyle } from './src/styles';
+
+
+const Stack = createNativeStackNavigator();
+
+
+const App = () => {
+    const scheme = useColorScheme();
+
+    return (
+        <GameProvider>
+            <TimerProvider>
+                <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+                    <Stack.Navigator
+                        screenOptions={{
+                            title: 'MineSweeper',
+                            headerBackVisible: false,
+                            headerStyle: headerStyle.header,
+                            headerTitleStyle: headerStyle.headerTitle,
+                            animation: 'none',
+                        }}
+                    >
+                        <Stack.Screen name='Settings' component={Settings} />
+                        <Stack.Screen name='Game' component={Game} options={{ headerRight: HeaderRight }} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </TimerProvider>
+        </GameProvider>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App;

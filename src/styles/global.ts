@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
     },
     card: {
         margin: 20,
@@ -30,23 +29,14 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center'
     },
-    statusBar: {
-        flex: 1,
-        backgroundColor: '#3346A6',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        elevation: 10
-    },
+    headerStyle: { backgroundColor: '#3346A6' },
+    textStatusBar: { color: 'white' },
     containerStatus: {
         flex: 1,
         flexDirection: 'row',
         marginRight: 20,
         marginLeft: 20
     },
-    textStatusBar: {
-        color: 'white',
-        fontSize: 20
-    }
 });
 
 
