@@ -26,12 +26,6 @@
     "android": {
       "package": "com.github.dCuby2.MineSweeper"
     },
-    "androidStatusBar": {
-      "barStyle": "light-content"
-    },
-    "androidNavigationBar": {
-      "backgroundColor": "#3346A6"
-    },
     "extra": {
       "test": false,
       "eas": {
