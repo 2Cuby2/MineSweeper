@@ -1,44 +1,43 @@
 {
   "expo": {
     "name": "MineSweeper",
-    "slug": "MineSweeper",
+    "slug": "minesweeper",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/bomb_icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/bomb_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.jeagt.minesweeper",
-      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.github.dCuby2.MineSweeper",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.jeagt.minesweeper",
-      "versionCode": 1
+      "package": "com.github.dCuby2.MineSweeper"
     },
     "androidStatusBar": {
-      "backgroundColor": "#252365",
       "barStyle": "light-content",
-      "translucent": false
+      "backgroundColor": "#00000000"
     },
     "androidNavigationBar": {
       "backgroundColor": "#3346A6"
     },
-    "extra" : {
-      "test": false
-    }
+    "extra": {
+      "test": false,
+      "eas": {
+        "projectId": "7079fdcc-30e3-4bae-b5b7-8072903234d9"
+      }
+    },
+    "owner": "2cuby2"
   }
 }

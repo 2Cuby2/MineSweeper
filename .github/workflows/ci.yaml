@@ -1,0 +1,34 @@
+name: Lint and type check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  ci:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⚙️ Checkout code
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: 📦 Install node modules 
+        run: npm install
+
+      - name: ✔️ Type check
+        run: npm run type-check
+
+      - name: 🧪 Lint
+        run: npm run lint
