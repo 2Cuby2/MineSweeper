@@ -41,5 +41,5 @@ jobs:
           ARTIFACT_URL=$( eas build:list --platform android --status finished --limit 1 --json --non-interactive | jq -r '.[].artifacts.buildUrl' )
           wget "$ARTIFACT_URL" -O ${{ env.RELEASE_ARTIFACT }}
 
-      - name: 💣 Upload relase artifact
+      - name: 💣 Upload release artifact
         run: gh release upload ${{ github.event.release.tag_name }} ${{ env.RELEASE_ARTIFACT }}
