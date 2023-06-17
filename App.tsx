@@ -1,13 +1,8 @@
 import React from 'react';
-import { useColorScheme } from 'react-native';
-import {
-    NavigationContainer,
-    DarkTheme,
-    DefaultTheme,
-} from '@react-navigation/native';
+import {  NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { GameProvider, TimerProvider } from './src/providers';
+import { GameManagerProvider, TimerManagerProvider } from './src/providers';
 import {
     HeaderRight,
     Game,
@@ -21,12 +16,10 @@ const Stack = createNativeStackNavigator();
 
 
 const App = () => {
-    const scheme = useColorScheme();
-
     return (
-        <GameProvider>
-            <TimerProvider>
-                <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <GameManagerProvider>
+            <TimerManagerProvider>
+                <NavigationContainer theme={DefaultTheme}>
                     <Stack.Navigator
                         screenOptions={{
                             title: 'MineSweeper',
@@ -40,8 +33,8 @@ const App = () => {
                         <Stack.Screen name='Game' component={Game} options={{ headerRight: HeaderRight }} />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </TimerProvider>
-        </GameProvider>
+            </TimerManagerProvider>
+        </GameManagerProvider>
     );
 }
 

@@ -9,7 +9,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-import { useGame } from '../hooks';
+import { useGameManager } from '../hooks';
 
 import { globalStyle as gStyles } from '../styles';
 
@@ -43,7 +43,7 @@ const NumberPicker = (props: NumberPickerProps) => {
 
 type SettingsProps = { navigation: NavigationProp<ParamListBase> };
 const Settings = ({ navigation }: SettingsProps) => {
-    const { defineDimensions } = useGame();
+    const { resizeGrid } = useGameManager();
 
     const [rowNumber, setRowNumber] = useState(7);
     const [colNumber, setColNumber] = useState(15);
@@ -100,7 +100,7 @@ const Settings = ({ navigation }: SettingsProps) => {
                     <TouchableHighlight
                             style={[gStyles.openButton, { marginTop: 35 }]}
                             onPress={() => {
-                                defineDimensions(rowNumber, colNumber);
+                                resizeGrid(rowNumber, colNumber);
                                 navigation.navigate('Game');
                             }}
                     >

@@ -7,24 +7,32 @@ import {
     Image,
     StyleProp,
     ViewStyle,
+    Vibration,
 } from 'react-native';
 
 import Constants from 'expo-constants';
 
-import {
-    ItemObject,
-    ItemObjectStatus,
-    GridObject,
-} from '../providers/utils';
+import { ItemObjectStatus } from '../providers/utils';
+
+import { useGameManager } from '../hooks';
 
 
-type ItemProps = {
-    pos: { x: number, y: number };
-    onPress: (x: number, y: number) => void;
-    onLongPress: (x: number, y: number) => void;
-    item: ItemObject;
-};
-const Item = ({ item, pos, onPress, onLongPress }: ItemProps) => {
+type ItemProps = { pos: { x: number, y: number }; };
+const Item = ({ pos }: ItemProps) => {
+    const {
+        grid,
+        revealSquare,
+        flagSquare,
+    } = useGameManager();
+
+    const item = grid[pos.y][pos.x];
+
+    const onPress = () => revealSquare(pos.x, pos.y);
+    const onLongPress = () => {
+        flagSquare(pos.x, pos.y);
+        Vibration.vibrate(200);
+    };
+
     let disabled = false;
     let content: JSX.Element | null = null;
     let style: StyleProp<ViewStyle> = styles.button;
@@ -66,8 +74,9 @@ const Item = ({ item, pos, onPress, onLongPress }: ItemProps) => {
         <View style={styles.item}>
             <TouchableOpacity 
                 style={style}
-                onPress={() => onPress(pos.x, pos.y)}
-                onLongPress={() => onLongPress(pos.x, pos.y)}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                delayLongPress={300}
                 disabled={disabled}
             >
                 {content}
@@ -77,24 +86,12 @@ const Item = ({ item, pos, onPress, onLongPress }: ItemProps) => {
 };
 
 
-type RowProps = {
-    pos: number;
-    num: number;
-    onPress: (x: number, y: number) => void;
-    onLongPress: (x: number, y: number) => void;
-    rowItem: ItemObject[]
-};
-const Row = ({ rowItem, pos, num, onPress, onLongPress }: RowProps) => {
+type RowProps = { pos: number; num: number; };
+const Row = ({ pos, num }: RowProps) => {
     const rows = [];
     for (let i=0; i < num; i++) {
         rows.push(
-            <Item
-                key={i}
-                pos={{ x: i, y: pos }}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                item={rowItem[i]}
-            />
+            <Item key={i} pos={{ x: i, y: pos }} />
         );
     }
     return (
@@ -105,25 +102,12 @@ const Row = ({ rowItem, pos, num, onPress, onLongPress }: RowProps) => {
 };
 
 
-type GridProps = {
-    rows: number;
-    cols: number;
-    onPress: (x: number, y: number) => void;
-    onLongPress: (x: number, y: number) => void;
-    grid: GridObject;
-};
-const Grid = ({ grid, rows, cols: colsNum, onPress, onLongPress }: GridProps) => {
+type GridProps = { rows: number; cols: number; };
+const Grid = ({ rows, cols: colsNum }: GridProps) => {
     const cols = [];
     for (let i=0; i < colsNum; i++) {
         cols.push(
-            <Row
-                key={i}
-                pos={i}
-                num={rows}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                rowItem={grid[i]}
-            />
+            <Row key={i} pos={i} num={rows} />
         );
     }
     return (

@@ -4,7 +4,8 @@
     "slug": "minesweeper",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "version": "2.0.0",
     "orientation": "portrait",
@@ -26,8 +27,7 @@
       "package": "com.github.dCuby2.MineSweeper"
     },
     "androidStatusBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#00000000"
+      "barStyle": "light-content"
     },
     "androidNavigationBar": {
       "backgroundColor": "#3346A6"

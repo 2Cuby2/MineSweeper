@@ -8,7 +8,7 @@ export type GridObject = ItemObject[][];
 
 
 // Create a blank grid and return a ranom number of bombs
-export function createBlankGrid(row: number, col: number): { grid: GridObject, num: number} {
+export function createBlankGrid(row: number, col: number): { grid: GridObject, numBombs: number} {
     const grid = new Array(col).fill(null).map(
         () => new Array(row).fill(null).map(() => ({
             isBomb: false,
@@ -18,8 +18,8 @@ export function createBlankGrid(row: number, col: number): { grid: GridObject, n
     );
     const max = Math.floor(row * col / 6);
     const min = Math.floor(max / 1.5);
-    const num = Math.floor(Math.random() * (max - min + 1)) + min;
-    return { grid, num };
+    const numBombs = Math.floor(Math.random() * (max - min + 1)) + min;
+    return { grid, numBombs };
 }
 
 
