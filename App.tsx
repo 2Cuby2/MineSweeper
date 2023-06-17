@@ -1,10 +1,5 @@
 import React from 'react';
-import { useColorScheme } from 'react-native';
-import {
-    NavigationContainer,
-    DarkTheme,
-    DefaultTheme,
-} from '@react-navigation/native';
+import {  NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { GameManagerProvider, TimerManagerProvider } from './src/providers';
@@ -21,12 +16,10 @@ const Stack = createNativeStackNavigator();
 
 
 const App = () => {
-    const scheme = useColorScheme();
-
     return (
         <GameManagerProvider>
             <TimerManagerProvider>
-                <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <NavigationContainer theme={DefaultTheme}>
                     <Stack.Navigator
                         screenOptions={{
                             title: 'MineSweeper',
