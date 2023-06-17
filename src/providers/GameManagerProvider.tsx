@@ -2,7 +2,7 @@
 import React, {
     createContext,
     useState,
-    useEffect,
+    useCallback,
 } from 'react';
 
 import {
@@ -23,64 +23,72 @@ export enum GameStatus {
 }
 
 
-type GameContextType = {
+type GameManagerContextType = {
     grid: GridObject;
     numBombs: number;
     status: GameStatus;
-    defineDimensions: (rows: number, cols: number) => void;
+    dimensions: { rows: number; cols: number };
+    resizeGrid: (rows: number, cols: number) => void;
     restart: () => void;
     revealSquare: (x: number, y: number) => void;
     flagSquare: (x: number, y: number) => void;
 };
-export const GameContext = createContext<GameContextType>({
+export const GameManagerContext = createContext<GameManagerContextType>({
     grid: [],
     numBombs: 0,
     status: GameStatus.NotInitialized,
-    defineDimensions: () => {},
+    dimensions: { rows: 0, cols: 0 },
+    resizeGrid: () => {},
     restart: () => {},
-    revealSquare: () => {},
-    flagSquare: () => {},
+    revealSquare: () => ({
+        isBomb: false,
+        nextBombsCount: 0,
+        status: ItemObjectStatus.Hidden
+    }),
+    flagSquare: () => ({
+        isBomb: false,
+        nextBombsCount: 0,
+        status: ItemObjectStatus.Hidden
+    }),
 });
 
 
-type GameProviderProps = { children: JSX.Element };
-function GameProvider({ children }: GameProviderProps) {
-    // Dimensions of the grid
+type GameManagerProviderProps = { children: JSX.Element };
+function GameManagerProvider({ children }: GameManagerProviderProps) {
+    // Config
     const [dimensions, setDimensions] = useState({ rows: 0, cols: 0 });
-    // Grid
-    const [grid, setGrid] = useState<GridObject>([]);
     // Number of bombs
     const [numBombs, setNumBombs] = useState<number>(0);
+    // Grid
+    const [grid, setGrid] = useState<GridObject>([]);
     // Game status
     const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.NotInitialized);
 
     const { rows, cols } = dimensions;
 
-    useEffect(() => {
-        const { grid: newGrid, num: newNumBombs } = createBlankGrid(rows, cols);
-        setGrid(newGrid);
+    const resizeGrid = useCallback((rows: number, cols: number ) => {
+        setDimensions({ rows, cols });
+        const { grid: newGrid, numBombs: newNumBombs } = createBlankGrid(rows, cols);
+        setGameStatus(GameStatus.NotInitialized);
         setNumBombs(newNumBombs);
+        setGrid(newGrid);
+    }, []);
+
+    const restart = useCallback(() => {
+        const { grid: newGrid, numBombs: newNumBombs } = createBlankGrid(rows, cols);
+        setGameStatus(GameStatus.NotInitialized);
+        setNumBombs(newNumBombs);
+        setGrid(newGrid);
     }, [dimensions]);
 
-    const defineDimensions = (rows: number, cols: number) => setDimensions({ rows, cols });
-
-    const restart = () => {
-        const { grid: newGrid, num: newNumBombs } = createBlankGrid(rows, cols);
-        setGrid(newGrid);
-        setNumBombs(newNumBombs);
-        setGameStatus(GameStatus.NotInitialized);
-    };
-
     const revealSquare = (x: number, y: number) => {
-        if (!grid || !numBombs) return;
-
-        grid[y][x].status = ItemObjectStatus.Revealed;
-
         // If it's the first move, set the grid
         if (gameStatus === GameStatus.NotInitialized) {
             setupGrid(grid, numBombs, x, y);
             setGameStatus(GameStatus.Started);
         }
+
+        grid[y][x].status = ItemObjectStatus.Revealed;
 
         // If it's a bomb, game is lost
         if (grid[y][x].isBomb) {
@@ -90,7 +98,9 @@ function GameProvider({ children }: GameProviderProps) {
             if (grid[y][x].nextBombsCount === 0) {
                 handle0Bomb(grid, x, y);
             }
-            setGrid(grid);
+
+            setGrid([...grid]);
+
             // Check if game is over and display the winning message
             if (isOver(grid)) {
                 setGameStatus(GameStatus.Won);
@@ -99,8 +109,6 @@ function GameProvider({ children }: GameProviderProps) {
     };
 
     const flagSquare = (x: number, y: number) => {
-        if (!grid) return;
-
         switch (grid[y][x].status) {
             case ItemObjectStatus.Flagged:
                 grid[y][x].status = ItemObjectStatus.Hidden;
@@ -112,23 +120,24 @@ function GameProvider({ children }: GameProviderProps) {
                 break;
         }
 
-        setGrid(grid);
-    }
+        setGrid([...grid]);
+    };
 
     return (
-      <GameContext.Provider value={{
-        grid,
-        numBombs,
-        status: gameStatus,
-        defineDimensions,
-        restart,
-        revealSquare,
-        flagSquare,
-    }}>
-        {children}
-      </GameContext.Provider>
+        <GameManagerContext.Provider value={{
+            grid,
+            numBombs,
+            status: gameStatus,
+            dimensions,
+            resizeGrid,
+            restart,
+            revealSquare,
+            flagSquare,
+        }}>
+            {children}
+        </GameManagerContext.Provider>
     );
 }
 
 
-export default GameProvider;
+export default GameManagerProvider;

@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { GameProvider, TimerProvider } from './src/providers';
+import { GameManagerProvider, TimerManagerProvider } from './src/providers';
 import {
     HeaderRight,
     Game,
@@ -24,8 +24,8 @@ const App = () => {
     const scheme = useColorScheme();
 
     return (
-        <GameProvider>
-            <TimerProvider>
+        <GameManagerProvider>
+            <TimerManagerProvider>
                 <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
                     <Stack.Navigator
                         screenOptions={{
@@ -40,8 +40,8 @@ const App = () => {
                         <Stack.Screen name='Game' component={Game} options={{ headerRight: HeaderRight }} />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </TimerProvider>
-        </GameProvider>
+            </TimerManagerProvider>
+        </GameManagerProvider>
     );
 }
 

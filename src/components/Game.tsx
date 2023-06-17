@@ -13,15 +13,17 @@ import {
     Animated,
     Dimensions,
     Easing,
-    Vibration,
     BackHandler
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native'
 
 import Grid from './Grid';
 
-import { useTimer, useGame } from '../hooks';
-import { GameStatus } from '../providers';
+import {
+    useTimerManager,
+    useGameManager,
+    GameStatus,
+} from '../hooks';
 
 import { globalStyle as gStyles } from '../styles';
 
@@ -44,17 +46,12 @@ const HandleReturn = ({ stopTimer }: HandleReturnProps) => {
 
 const Game = () => {
     const {
-        grid,
+        dimensions: { rows, cols },
         status: gameStatus,
         restart: restartGame,
-        revealSquare,
-        flagSquare,
-    } = useGame();
+    } = useGameManager();
 
-    const { start: startTimer, reset: resetTimer } = useTimer();
-
-    const cols = grid.length;
-    const rows = grid.length ? grid[0].length : 0;
+    const { start: startTimer, reset: resetTimer } = useTimerManager();
 
     // Text to display once game is over (win or loose)
     const [text, setText] = useState('');
@@ -123,26 +120,11 @@ const Game = () => {
         ]).start(() => setCanBePressed('none')); // Prevent from clicking on the grid when popup show
     }
 
-    // Handle press actions
-    const onPress = (x: number, y: number) => revealSquare(x, y);
-
-    // Handle long press action to place a flag
-    const onLongPress = (x: number, y: number) => {
-        flagSquare(x, y);
-        Vibration.vibrate(200); // Vibrate to confirm that a flag has been placed
-    }
-
     return (
         <SafeAreaView style={gStyles.container}>
 
             <View style={styles.grid} pointerEvents={canBePressed}>
-                <Grid
-                    rows={rows}
-                    cols={cols}
-                    onPress={onPress}
-                    onLongPress={onLongPress}
-                    grid={grid}
-                />
+                <Grid rows={rows} cols={cols} />
             </View>
 
             <Animated.View

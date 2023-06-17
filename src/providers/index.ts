@@ -1,2 +1,2 @@
-export { default as GameProvider, GameStatus, GameContext } from './GameProvider';
-export { default as TimerProvider, TimerContext } from './TimerProvider';
+export { default as GameManagerProvider, GameStatus, GameManagerContext } from './GameManagerProvider';
+export { default as TimerManagerProvider, TimerStatus, TimerManagerContext } from './TimerManagerProvider';
