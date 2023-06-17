@@ -1,12 +1,9 @@
 name: Build application
 
 on:
-  pull_request:
-    branches:
-      - main
-  # release:
-  #   types:
-  #     - published
+  release:
+    types:
+      - published
 
 jobs:
 
@@ -14,17 +11,20 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      RELEASE_ARTIFACT: MineSweeper.apk
+
     steps:
-      - name: Setup repo
+      - name: ⚙️ Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: ⚙️ Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
 
-      - name: Setup EAS
+      - name: ⚙️ Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -34,4 +34,12 @@ jobs:
         run: npm install --production
 
       - name: 🚀 Build app
-        run: eas build --non-interactive -p android --profile preview
+        run: eas build --non-interactive --platform android --profile preview
+
+      - name: 📥 Download built artifact
+        run: |
+          ARTIFACT_URL=$( eas build:list --platform android --status finished --limit 1 --json --non-interactive | jq -r '.[].artifacts.buildUrl' )
+          wget "$ARTIFACT_URL" -O ${{ env.RELEASE_ARTIFACT }}
+
+      - name: 💣 Upload relase artifact
+        run: gh release upload ${{ github.event.release.tag_name }} ${{ env.RELEASE_ARTIFACT }}
