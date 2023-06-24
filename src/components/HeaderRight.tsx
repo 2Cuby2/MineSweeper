@@ -4,6 +4,9 @@ import {
   Text,
   Image,
 } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+
+import Theme from '../theme';
 
 import {
     useTimerManager,
@@ -11,12 +14,12 @@ import {
     TimerStatus,
 } from '../hooks';
 
-import { headerStyle } from '../styles';
-
 
 const HeaderRight = () => {
     const { numBombs } = useGameManager();
     const { timerStatus } = useTimerManager();
+
+    const theme = useTheme() as typeof Theme;
 
     const [timerValue, setTimerValue] = useState({ min: 0, sec: 0 });
 
@@ -40,15 +43,27 @@ const HeaderRight = () => {
     const formatNumber = (n: number) => `0${n}`.slice(-2); // Format numbers for timer
 
     return (
-        <View style={headerStyle.headerRight}>
-            <Text style={headerStyle.headerRightText}>
+        <View style={{ flexDirection: 'row' }}>
+            <Text
+                style={{
+                    marginLeft: 25,
+                    color: theme.colors.textLight,
+                    fontSize: 17,
+                }}
+            >
                 {`${numBombs}  `}
                 <Image
                     style={{ width: 17, height: 17 }}
                     source={require('../../assets/bomb.png')}
                 />
             </Text>
-            <Text style={headerStyle.headerRightText}>
+            <Text
+                style={{
+                    marginLeft: 25,
+                    color: theme.colors.textLight,
+                    fontSize: 17,
+                }}
+            >
                 {`${formatNumber(timerValue.min)}:${formatNumber(timerValue.sec)}`}
             </Text>
         </View>

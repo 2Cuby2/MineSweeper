@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import {
     SafeAreaView,
-    StyleSheet,
     Text,
     View,
     TouchableHighlight,
@@ -15,7 +14,7 @@ import {
     Easing,
     BackHandler
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useTheme } from '@react-navigation/native'
 
 import Grid from './Grid';
 
@@ -25,7 +24,9 @@ import {
     GameStatus,
 } from '../hooks';
 
-import { globalStyle as gStyles } from '../styles';
+import Theme from '../theme';
+
+import styles from '../styles';
 
 
 /* Handle hardware android back button events that should stop timer before changing screen to prevent
@@ -50,6 +51,8 @@ const Game = () => {
         status: gameStatus,
         restart: restartGame,
     } = useGameManager();
+
+    const theme = useTheme() as typeof Theme;
 
     const { start: startTimer, reset: resetTimer } = useTimerManager();
 
@@ -121,32 +124,56 @@ const Game = () => {
     }
 
     return (
-        <SafeAreaView style={gStyles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
 
-            <View style={styles.grid} pointerEvents={canBePressed}>
+            <View
+                style={{
+                    flex: 12,
+                    marginVertical: 2,
+                    marginHorizontal: 2,
+                }}
+                pointerEvents={canBePressed}
+            >
                 <Grid rows={rows} cols={cols} />
             </View>
 
             <Animated.View
-                style={[
-                    styles.animatedView,
-                    { bottom: pos.current }
-                ]}
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: pos.current,
+                }}
             >
                 <Animated.View
-                    style={[
-                        gStyles.card,
-                        { transform: [{ scale: scale.current }] }
-                    ]}
+                    style={{
+                        backgroundColor: theme.colors.background,
+                        margin: 20,
+                        borderRadius: 10,
+                        padding: 35,
+                        alignItems: 'center',
+                        elevation: 5,
+                        transform: [{ scale: scale.current }],
+                    }}
                 >
-                    <Text style={styles.modalText}>
+                    <Text style={{
+                        marginBottom: 25,
+                        fontSize: 15,
+                        textAlign: 'center',
+                    }}>
                         {text}
                     </Text>
                     <TouchableHighlight
-                        style={gStyles.openButton}
+                        style={[styles.button, {
+                            backgroundColor: theme.colors.primary,
+                        }]}
+                        underlayColor={theme.colors.secondary}
                         onPress={restart}
                     >
-                        <Text style={gStyles.textStyle}>Retry</Text>
+                        <Text style={{ textAlign: 'center' }}>Retry</Text>
                     </TouchableHighlight>
                 </Animated.View>
             </Animated.View>
@@ -156,33 +183,6 @@ const Game = () => {
         </SafeAreaView>
     );
 };
-
-
-const styles = StyleSheet.create({
-    animatedView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0
-    },
-    modalText: {
-        marginBottom: 25,
-        fontSize: 15,
-        color: 'black',
-        textAlign: 'center'
-    },
-    grid: {
-        flex: 12,
-        marginVertical: 2,
-        marginHorizontal: 2
-    },
-    subView: {
-        flex: 1,
-        justifyContent: 'center'
-    }
-});
 
 
 export default Game;

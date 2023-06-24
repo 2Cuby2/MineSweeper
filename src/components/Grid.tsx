@@ -9,12 +9,25 @@ import {
     ViewStyle,
     Vibration,
 } from 'react-native';
+import { useTheme } from '@react-navigation/native'
 
 import Constants from 'expo-constants';
 
 import { ItemObjectStatus } from '../providers/utils';
 
 import { useGameManager } from '../hooks';
+
+import Theme from '../theme';
+
+
+const styles = StyleSheet.create({
+    box: {
+        flex: 1,
+        borderRadius: 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
 
 
 type ItemProps = { pos: { x: number, y: number }; };
@@ -24,6 +37,8 @@ const Item = ({ pos }: ItemProps) => {
         revealSquare,
         flagSquare,
     } = useGameManager();
+
+    const theme = useTheme() as typeof Theme;
 
     const item = grid[pos.y][pos.x];
 
@@ -35,13 +50,15 @@ const Item = ({ pos }: ItemProps) => {
 
     let disabled = false;
     let content: JSX.Element | null = null;
-    let style: StyleProp<ViewStyle> = styles.button;
+    let style: StyleProp<ViewStyle> = styles.box;
 
     if (item.status === ItemObjectStatus.Hidden) {
         content = Constants.expoConfig?.extra?.test
-            ? <Text style={styles.text}>{item.isBomb ? 'x' : ' '}</Text>
+            ? <Text>{item.isBomb ? 'x' : ' '}</Text>
             : null;
-        style = [styles.button, styles.buttonEnabled];
+        style = [styles.box, {
+            backgroundColor: theme.colors.secondaryDark,
+        }];
     } else if (item.status === ItemObjectStatus.Revealed) {
         const count = item.nextBombsCount;
 
@@ -54,12 +71,14 @@ const Item = ({ pos }: ItemProps) => {
             );
         } else {
             content = (
-                <Text style={styles.text}>{count === 0 ? null : count}</Text>
+                <Text>{count === 0 ? null : count}</Text>
             );
         }
 
         disabled = true;
-        style = [styles.button, styles.buttonDisabled];
+        style = [styles.box, {
+            backgroundColor: theme.colors.secondary,
+        }];
     } else if (item.status === ItemObjectStatus.Flagged) {
         content = (
             <Image
@@ -67,16 +86,24 @@ const Item = ({ pos }: ItemProps) => {
                 source={require('../../assets/flag.png')}
             />
         );
-        style = [styles.button, styles.buttonEnabled];
+        style = [styles.box, {
+            backgroundColor: theme.colors.secondaryDark,
+        }];
     }
 
     return (
-        <View style={styles.item}>
+        <View
+            style={{
+                flex: 1,
+                marginVertical: 2,
+                marginHorizontal: 2,
+            }}
+        >
             <TouchableOpacity 
                 style={style}
                 onPress={onPress}
                 onLongPress={onLongPress}
-                delayLongPress={300}
+                delayLongPress={200}
                 disabled={disabled}
             >
                 {content}
@@ -116,30 +143,6 @@ const Grid = ({ rows, cols: colsNum }: GridProps) => {
         </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    item: {
-        flex: 1,
-        marginVertical: 2,
-        marginHorizontal: 2
-    },
-    button: {
-        flex: 1,
-        borderRadius: 2,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    buttonEnabled: {
-        backgroundColor: '#6284E6'
-    },
-    buttonDisabled: {
-        backgroundColor: '#C49FEF'
-    },
-    text: {
-        color: 'black',
-    }
-});
 
 
 export default Grid;
