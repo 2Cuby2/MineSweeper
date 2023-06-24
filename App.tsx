@@ -1,7 +1,7 @@
 import React from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
 import { StatusBar } from 'expo-status-bar';
-import {  NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import {  NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { GameManagerProvider, TimerManagerProvider } from './src/providers';
@@ -11,28 +11,28 @@ import {
     Settings,
 } from './src/components';
 
-import { headerStyle } from './src/styles';
+import Theme from './src/theme';
 
 
 const Stack = createNativeStackNavigator();
 
 
 const App = () => {
-    NavigationBar.setBackgroundColorAsync('#3346A6');
+    NavigationBar.setBackgroundColorAsync(Theme.colors.primaryDark);
     NavigationBar.setVisibilityAsync('visible');
 
     return (
         <>
-            <StatusBar style="light" />
+            <StatusBar style="light" translucent={true} />
             <GameManagerProvider>
                 <TimerManagerProvider>
-                    <NavigationContainer theme={DefaultTheme}>
+                    <NavigationContainer theme={Theme}>
                         <Stack.Navigator
                             screenOptions={{
                                 title: 'MineSweeper',
                                 headerBackVisible: false,
-                                headerStyle: headerStyle.header,
-                                headerTitleStyle: headerStyle.headerTitle,
+                                headerTitleStyle: { color: Theme.colors.textLight },
+                                headerStyle: { backgroundColor: Theme.colors.primaryDark },
                                 animation: 'none',
                             }}
                         >
