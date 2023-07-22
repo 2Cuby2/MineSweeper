@@ -7,7 +7,7 @@
       "android",
       "web"
     ],
-    "version": "2.1.0",
+    "version": "2.1.1",
     "orientation": "portrait",
     "icon": "./assets/bomb_icon.png",
     "userInterfaceStyle": "light",
